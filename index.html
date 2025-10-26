@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校内行政办公系统</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 登录页面 -->
+    <div id="login-page" class="page active">
+        <div class="login-container">
+            <div class="login-box">
+                <h1>校内行政办公系统</h1>
+                <p class="subtitle">Campus Administrative Office System</p>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">用户名</label>
+                        <input type="text" id="username" placeholder="请输入用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="password" id="password" placeholder="请输入密码" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">角色</label>
+                        <select id="role" required>
+                            <option value="">请选择角色</option>
+                            <option value="admin">管理员</option>
+                            <option value="department">部门主管</option>
+                            <option value="staff">员工</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">登录</button>
+                </form>
+                <div class="demo-hint">
+                    <p>演示账号: admin / 密码: 123456</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主系统页面 -->
+    <div id="main-page" class="page">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>📋 行政系统</h2>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#" data-module="dashboard" class="nav-item active">📊 仪表板</a></li>
+                    <li><a href="#" data-module="report" class="nav-item">📑 报表填写</a></li>
+                    <li><a href="#" data-module="review" class="nav-item">✅ 材料审核</a></li>
+                    <li><a href="#" data-module="leave" class="nav-item">📅 请假申请</a></li>
+                    <li><a href="#" data-module="repair" class="nav-item">🔧 报修申请</a></li>
+                    <li><a href="#" data-module="my-requests" class="nav-item">📝 我的申请</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="btn btn-small">退出登录</button>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 顶部栏 -->
+            <div class="top-bar">
+                <div class="user-info">
+                    <span id="user-name">用户</span>
+                    <span id="user-role" class="role-badge"></span>
+                </div>
+            </div>
+
+            <!-- 仪表板模块 -->
+            <section id="dashboard" class="module active">
+                <h2>仪表板</h2>
+                <div class="dashboard-grid">
+                    <div class="card stats-card">
+                        <div class="card-icon">📑</div>
+                        <div class="card-content">
+                            <h3>待填报表</h3>
+                            <p class="stats-number">3</p>
+                        </div>
+                    </div>
+                    <div class="card stats-card">
+                        <div class="card-icon">✅</div>
+                        <div class="card-content">
+                            <h3>待审核材料</h3>
+                            <p class="stats-number">5</p>
+                        </div>
+                    </div>
+                    <div class="card stats-card">
+                        <div class="card-icon">📅</div>
+                        <div class="card-content">
+                            <h3>待处理请假</h3>
+                            <p class="stats-number">2</p>
+                        </div>
+                    </div>
+                    <div class="card stats-card">
+                        <div class="card-icon">🔧</div>
+                        <div class="card-content">
+                            <h3>待处理报修</h3>
+                            <p class="stats-number">4</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-activity">
+                    <h3>最近活动</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <span class="time">今天 10:30</span>
+                            <span class="content">您提交了月度报表</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="time">昨天 14:45</span>
+                            <span class="content">您的请假申请已批准</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="time">3天前 09:15</span>
+                            <span class="content">您提交了设备报修申请</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 报表填写模块 -->
+            <section id="report" class="module">
+                <h2>报表填写</h2>
+                <div class="toolbar">
+                    <button class="btn btn-primary" onclick="openReportForm()">+ 新建报表</button>
+                    <input type="text" placeholder="搜索报表..." class="search-box">
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>报表名称</th>
+                                <th>截止日期</th>
+                                <th>状态</th>
+                                <th>提交时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="report-list">
+                            <tr>
+                                <td>2025年10月月度报表</td>
+                                <td>2025-11-05</td>
+                                <td><span class="badge badge-pending">待提交</span></td>
+                                <td>-</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary">编辑</button>
+                                    <button class="btn btn-sm btn-success">提交</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9月季度总结</td>
+                                <td>2025-10-01</td>
+                                <td><span class="badge badge-completed">已提交</span></td>
+                                <td>2025-10-01 14:30</td>
+                                <td>
+                                    <button class="btn btn-sm btn-info">查看</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 材料审核模块 -->
+            <section id="review" class="module">
+                <h2>材料审核</h2>
+                <div class="filter-group">
+                    <button class="filter-btn active" data-filter="all">全部</button>
+                    <button class="filter-btn" data-filter="pending">待审核</button>
+                    <button class="filter-btn" data-filter="approved">已批准</button>
+                    <button class="filter-btn" data-filter="rejected">已驳回</button>
+                </div>
+                <div class="review-list">
+                    <div class="review-card" data-status="pending">
+                        <div class="review-header">
+                            <h3>部门经费预算申请</h3>
+                            <span class="badge badge-pending">待审核</span>
+                        </div>
+                        <div class="review-info">
+                            <p><strong>申请人:</strong> 王小明</p>
+                            <p><strong>申请部门:</strong> 人事处</p>
+                            <p><strong>提交时间:</strong> 2025-10-25 10:30</p>
+                            <p><strong>申请金额:</strong> ¥50,000</p>
+                        </div>
+                        <div class="review-files">
+                            <p><strong>附件:</strong> 预算表.xlsx</p>
+                        </div>
+                        <div class="review-actions">
+                            <button class="btn btn-success" onclick="approveReview(this)">批准</button>
+                            <button class="btn btn-danger" onclick="rejectReview(this)">驳回</button>
+                            <button class="btn btn-info">查看详情</button>
+                        </div>
+                    </div>
+                    <div class="review-card" data-status="pending">
+                        <div class="review-header">
+                            <h3>教室改造项目材料</h3>
+                            <span class="badge badge-pending">待审核</span>
+                        </div>
+                        <div class="review-info">
+                            <p><strong>申请人:</strong> 李春花</p>
+                            <p><strong>申请部门:</strong> 总务处</p>
+                            <p><strong>提交时间:</strong> 2025-10-24 15:20</p>
+                            <p><strong>项目预算:</strong> ¥100,000</p>
+                        </div>
+                        <div class="review-files">
+                            <p><strong>附件:</strong> 设计方案.pdf, 预算表.xlsx</p>
+                        </div>
+                        <div class="review-actions">
+                            <button class="btn btn-success" onclick="approveReview(this)">批准</button>
+                            <button class="btn btn-danger" onclick="rejectReview(this)">驳回</button>
+                            <button class="btn btn-info">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 请假申请模块 -->
+            <section id="leave" class="module">
+                <h2>请假申请</h2>
+                <div class="form-section">
+                    <button class="btn btn-primary" onclick="openLeaveForm()">+ 新建请假申请</button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>请假类型</th>
+                                <th>起始日期</th>
+                                <th>结束日期</th>
+                                <th>天数</th>
+                                <th>状态</th>
+                                <th>审核人</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>年假</td>
+                                <td>2025-11-01</td>
+                                <td>2025-11-03</td>
+                                <td>3天</td>
+                                <td><span class="badge badge-pending">待批准</span></td>
+                                <td>-</td>
+                                <td>
+                                    <button class="btn btn-sm btn-info">查看</button>
+                                    <button class="btn btn-sm btn-danger">撤回</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>病假</td>
+                                <td>2025-10-20</td>
+                                <td>2025-10-21</td>
+                                <td>2天</td>
+                                <td><span class="badge badge-completed">已批准</span></td>
+                                <td>张主任</td>
+                                <td>
+                                    <button class="btn btn-sm btn-info">查看</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 报修申请模块 -->
+            <section id="repair" class="module">
+                <h2>报修申请</h2>
+                <div class="form-section">
+                    <button class="btn btn-primary" onclick="openRepairForm()">+ 新建报修申请</button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>维修类型</th>
+                                <th>位置</th>
+                                <th>描述</th>
+                                <th>优先级</th>
+                                <th>状态</th>
+                                <th>报修时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>空调维修</td>
+                                <td>A栋305教室</td>
+                                <td>空调不制冷</td>
+                                <td><span class="badge badge-high">高</span></td>
+                                <td><span class="badge badge-progress">处理中</span></td>
+                                <td>2025-10-25 08:30</td>
+                                <td>
+                                    <button class="btn btn-sm btn-info">跟进</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>灯具更换</td>
+                                <td>B栋一楼走廊</td>
+                                <td>走廊灯坏了</td>
+                                <td><span class="badge badge-low">低</span></td>
+                                <td><span class="badge badge-completed">已完成</span></td>
+                                <td>2025-10-20 14:15</td>
+                                <td>
+                                    <button class="btn btn-sm btn-info">查看</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 我的申请模块 -->
+            <section id="my-requests" class="module">
+                <h2>我的申请</h2>
+                <div class="tab-group">
+                    <button class="tab-btn active" data-tab="all">全部申请</button>
+                    <button class="tab-btn" data-tab="pending">待处理</button>
+                    <button class="tab-btn" data-tab="completed">已完成</button>
+                </div>
+                <div class="requests-grid">
+                    <div class="request-card">
+                        <div class="card-header">
+                            <h3>年假申请</h3>
+                            <span class="badge badge-pending">待批准</span>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>申请日期:</strong> 2025-10-25</p>
+                            <p><strong>假期时间:</strong> 2025-11-01 ~ 2025-11-03</p>
+                            <p><strong>请假天数:</strong> 3天</p>
+                        </div>
+                        <div class="card-footer">
+                            <small>正在等待审批...</small>
+                        </div>
+                    </div>
+                    <div class="request-card">
+                        <div class="card-header">
+                            <h3>空调维修报修</h3>
+                            <span class="badge badge-progress">处理中</span>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>报修位置:</strong> A栋305教室</p>
+                            <p><strong>问题描述:</strong> 空调不制冷</p>
+                            <p><strong>优先级:</strong> 高</p>
+                        </div>
+                        <div class="card-footer">
+                            <small>维修人员已接单，预计今日完成</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 模态对话框 -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modal-title">表单</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modal-body" class="modal-body">
+                <!-- 动态加载内容 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
